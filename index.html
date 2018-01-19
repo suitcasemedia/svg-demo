@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://use.fontawesome.com/7ad0425b0e.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./bower_components/intro.js/introjs.css">
+        <link rel="stylesheet" type="text/css" href="https://www.garrison.com/assets/css/main.css?v=1.3">
+        <meta charset="utf-8">
+        <meta name="copyright" content="Copyright © 2013 Adobe Systems Incorporated. All rights reserved.
+ 
+ Licensed under the Apache License, Version 2.0 (the “License”);
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an “AS IS” BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.">
+        <title>Garrison demo</title>
+        <link rel="stylesheet" href="../../dist/fonts/stylesheet.css">
+        <style media="screen">
+        body {
+           
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            text-decoration: underline;
+        }
+        h1{
+            font-size: 2em;
+            line-height: 3em;
+            
+        }
+        li{
+            line-height: 2.5em;
+            white-space: nowrap;
+            overflow: hidden; 
+            text-overflow: ellipsis;
+        }
+        td{
+            padding: 0.3em;
+        }
+        h2{
+            font-size: 1.5em;
+            padding-bottom: 1em;
+        }
+        .box-number{
+            fill:#666;
+        }
+        .container{
+            width: 100%;
+           
+        }
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+}
+        .svg{ 
+            width: 50%;
+            background: #000;
+            display: block;
+            position: relative;
+            float: right;
+
+        }
+        .editing-area{
+            padding: 1em 3em 0em 5em;
+            float:left;
+            width: 50%;
+            backgound: #fff;
+            position: relative;
+
+        }
+        .layout-guide, .color-guide{
+            border : 2px solid #ccc;
+            padding: 1em;
+            width: 90%;
+            margin-bottom: 3em;
+        }
+        @media (max-width: 40em) {
+            .layout-guide{
+                display: none;
+            }
+            .svg, .editing-area {
+                float: none;
+                width: auto;
+                }
+                .box-number{
+                    fill:#000;
+        }
+            }
+        .logo{
+            position: fixed;
+            bottom: 0px;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        </style>
+        <script src="./snap.svg-min.js"></script>
+       
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                    <div class="editing-area" id="editing-area">
+                          
+                        <div class="color-guide" id="colour-guide">
+                              
+                            
+                            <h2>Indicator colour guide</h2>
+                            
+                            <p><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#008000" style=""></rect> </svg> Fully operational</p>
+                            <p><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#000000" style=""></rect> </svg> Not configured</p>
+                            <p><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#ffa500" style=""></rect> </svg> Attention recommended</p>
+                            <p><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#ff0000" style=""></rect> </svg> Action required</p>
+                        </div>
+                        <a  href='#'  data-position='right' data-intro='These guides will help you understand at a glance the status of each SAVI worker on in the real time reporting grid on  the right'></a>
+                       <div class="layout-guide" id="layout-guide">
+                           
+                        <h2>Indicator layout guide</h2>
+                        <svg width="100%" viewBox="0 0 12 10.5">
+
+                                <g>
+                                   <!-- <text x="0" y="4" style="font-size: 4px;" fill="#666" class="Box-number">13</text>
+                                    <text x="1" y="4.5" style="font-size: 0.35px;" fill="green">box number</text> -->
+                                    <rect x="0" y="1" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="0" y="3.5" style="font-size: 0.35px;" fill="green">Virus detection</text>
+                                    <rect x="3" y="1" width="2" height="2" fill="#008000" style=""></rect>
+                                    <text x="3" y="3.5" style="font-size: 0.35px;" fill="green">External storage</text>
+                                    <rect x="6" y="1" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="6" y="3.5" style="font-size: 0.35px;" fill="green">Bookmarks</text>
+                                    <rect x="9" y="1" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="9" y="3.5" style="font-size: 0.35px;" fill="green">User group</text>
+                                    <rect x="0" y="4" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="0" y="6.5" style="font-size: 0.35px;" fill="green">Content Filters</text>
+                                    <rect x="3" y="4" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="3" y="6.5" style="font-size: 0.35px;" fill="green">Extra bandwidth</text>
+                                    <rect x="6" y="4" width="2" height="2"  fill="#008000"  style=""></rect>
+                                    <text x="6" y="6.5" style="font-size: 0.35px;" fill="green">Firmware update</text>
+                                    <rect x="9" y="4" width="2" height="2" fill="#008000" style=""></rect>
+                                    <text x="9" y="6.5" style="font-size: 0.35px;" fill="green">Power on</text>
+                                </g>
+                        </svg>
+
+                       </div>  
+
+                       <div class="editing-block hidden" id="editing-block">
+                           <div id="editing-header"></div>
+                           <table>
+                                <tr>
+                                    <td>
+                                        <svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#FF0000" style=""></rect></svg> 
+                                    </td>
+                                    <td>
+                                        VIRUS DETECTION: 
+                                    </td>
+                                    <td>
+                                        Malware has been intercepted 3 times.
+
+                                    </td>
+                                    <td>
+                                        <i  id="myBtn" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#008000" style=""></rect></svg> 
+                                    </td>
+                                    <td> EXTERNAL STORAGE:  </td>
+                                    <td>15mb of 500mb  used </td>
+                                    <td><i  id="myBtn1" class="fa fa-plus-square" aria-hidden="true"></i></td>    
+                                </tr>
+                                <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#008000" style=""></rect></svg> 
+                                    </td>
+                                    <td> BOOKMARKS: </td>
+                                    <td>15 bookmarks created </td>
+                                    <td>
+                                            <i  id="myBtn2" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#008000" style=""></rect></svg> 
+                                    </td>
+                                    <td> USER GROUP: </td>
+                                    <td> This user is part of 'HR' user group </td>
+                                    <td>
+                                            <i  id="myBtn3" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#ffa500" style=""></rect></svg> 
+                                    </td>
+                                    <td> CONTENT FILTERS: </td>
+                                    <td>Access denied 160 times this month </td>
+                                    <td>
+                                            <i  id="myBtn4" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#000000" style=""></rect></svg> 
+                                    </td>
+                                    <td> EXTRA BANDWIDTH: </td>
+                                    <td>10MB bandwidth enabled </td>
+                                    <td>
+                                            <i  id="myBtn5" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#ffa500" style=""></rect></svg> 
+                                    </td>
+                                    <td> FIRMWARE UPDATES: </td>
+                                    <td>Firmware update recommended </td>
+                                    <td>
+                                            <i  id="myBtn6" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><svg width="15px" height="15px"><rect width="15px" height="15px" viewBox="0 0 1 1" x="2" y="2" fill="#008000" style=""></rect></svg> 
+                                    </td>
+                                    <td> POWER: </td>
+                                    <td>On </td>
+                                    <td>
+                                            <i  id="myBtn7" class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                                            
+                             
+                            </table>
+                              
+                       </div>                                                       
+                    </div>
+                <div class="svg">
+                       
+                        <a  href='http://example.com/'  data-position='left' data-intro='Select a box to start configuring a SAVI worker!'></a>
+                   
+                    <svg id="svg"></svg>  
+                    
+                  
+                </div>
+            </div>
+          
+
+            <!-- Bookmarks Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Example modal where configuration would occur</h2>
+                    <p>Configuration GUI and user information here...</p>
+                </div>
+
+            </div><!-- Trigger/Open The Modal -->
+           =
+            
+
+         
+
+           
+
+        </div>
+        <script src="./bower_components/intro.js/intro.js"></script>
+    </body>
+    <script>
+      
+      introJs().start();
+
+        var editingArea = document.getElementById("editing-area")
+        var editingHeader = document.getElementById("editing-header")
+
+        var editingBlock = document.getElementById("editing-block")
+
+        var colorGuide = document.getElementById("colour-guide")
+        var layoutGuide = document.getElementById("layout-guide")
+
+        var title = document.createElement("h1");        // Create a <button> element
+        var boxNumber;
+       
+        
+       
+
+
+        var s = Snap("#svg");
+        var x = 0 //viewbox
+        var y = 0 //viewbox
+        var wi = 230 //viewbox
+        var hi = 620 //viewbox      
+        s.attr({
+            viewBox:x+","+y+","+wi+","+hi,
+            width: "100%",
+            height: "100%"
+        });
+
+
+        var beeboxPathOriginX = 5 // starting point for box
+        var beeboxPathOriginY = 10  // starting point for box
+        var int = 1
+        
+            // draw a box
+        for( y= beeboxPathOriginY; y <= 610 ; y += 22 ){
+            for( x= beeboxPathOriginX; x <= 220 ; x += 22 ){
+                
+            var boxFront =  s.path("M " + String(x ) + "," + String(y) + " l0,0 l 15 ,0l0,15l-15,0l0,-15 z")
+                            .attr({fill: "#fff","stroke":"black","stroke-width":0.2 } ) 
+            var boxTop =  s.path("M " + String(x ) + "," + String(y) + " l0,0l5,-5l15,0l-5,5l-15,0z") 
+                .attr({fill: "#fff","stroke":"black","stroke-width":0.2 } )  
+            var boxSide =   s.path("M " + String(x + 15 ) + "," + String(y) + "l 5,-5   l0,15   l-5,5   l0,-15 z")   
+                .attr({fill: "#fff","stroke":"black","stroke-width":0.2 })
+            var boxText =    s.text( x + 1 , y + 6.5 , int   )
+                .attr({'font-size': 7,'class': 'box-number'})
+            var rect1 = s.rect( x + 2, y + 8,2, 2)
+                .attr({fill:'red'})    
+            var  textVirus = s.text(x + 2 , y + 10.5, "Virus detection")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            
+           
+            var rect2 = s.rect( x + 5, y + 8,2, 2)
+                .attr({fill:'green'})
+            var  textStorage = s.text(x + 5 , y + 10.5, "External storage")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect3 = s.rect( x + 8, y + 8 ,2, 2)
+                .attr({fill:'green'})
+            var  textBookmarks = s.text(x + 8 , y + 10.5, "Bookmarks")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect4 = s.rect( x + 11, y + 8 ,2, 2)
+                .attr({fill:'green'})
+            var  textUserGroup = s.text(x + 11 , y + 10.5, "User group")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect5 = s.rect( x + 2 , y + 11,2, 2)
+                .attr({fill:'orange'})
+            var  textContentFilters = s.text(x + 2 , y + 13.5, "Content filters")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect6 = s.rect( x + 5, y + 11  ,2, 2)
+                .attr({fill:'black'})
+            var  textExtraBandwidth = s.text(x + 5 , y + 13.5, "Extra bandwidth")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect7 = s.rect( x + 8, y +  11 ,2, 2)
+                .attr({fill:'green'})
+            var  textFirmwareUpdate = s.text(x + 8 , y + 13.5, "Firmware update")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+            var rect8 = s.rect( x + 11, y + 11 ,2, 2)
+                .attr({fill:'green'})
+            var  textPowerOn = s.text(x + 11 , y + 13.5, "Power")
+                .attr({'font-size': '0.35px', 'fill':'green'})
+
+            var completeBox = s.group(boxFront, boxSide, boxTop, boxText, rect1, rect2,rect3, rect4,rect5,rect6,rect7,rect8 , textVirus, textStorage,textBookmarks, textUserGroup, textContentFilters, textExtraBandwidth, textFirmwareUpdate, textPowerOn)
+                // .attr({fill: "#fff","stroke":"black","stroke-width":0.2, id: int })
+                    .attr({ id: int })
+
+
+                int++
+                }
+            }
+            /*
+            var twentyFive = document.getElementById("25");
+            var bbox = Snap(twentyFive).getBBox();
+            console.log(bbox)
+            s.rect(bbox.x, bbox.y, bbox.width,  bbox.width)
+            .attr({ // 'stroke':'red', 'fill':'none'
+            })
+            */
+
+		
+            var clicked = false;
+            function zoomIn(ev ,path) {
+                var splitted = path.split(" ")[2].split(","),
+                x = parseInt(splitted[0],10),
+                y = parseInt(splitted[1], 10),
+                wi = 15,
+                hi =15;
+                console.log("x",x)
+                console.log("y",y)
+                console.log("clicked")
+                if(clicked == false) {
+                    clicked = true;
+            
+                    console.log("viewbox stuff",  x+" "+y+","+wi+","+hi )
+                    s.animate({viewBox: x+" "+y+" "+wi+" "+hi }, 600);
+                     var xCircle =  s.circle(x + 14, y + 1.5  ,0.45   )
+                    .attr({strokeWidth: 0.05, stroke:'black',fill:'white'})
+                     var closeX =  s.text( x + 13.65 , y  + 1.85 , "X"  )
+                    .attr({'font-size': 1, 'fill': '#444'})
+                    
+                     boxNumber = document.createElement('h1')
+                    
+                    var b = document.createTextNode("Configuring SAVI worker "+  ev.path[1].id);       // Create a text node
+                    boxNumber.appendChild(b)
+              
+                    
+        
+                    colorGuide.className += " hidden"
+                    layoutGuide.className += " hidden"
+                    editingBlock.classList.remove("hidden");
+                    console.log("EV", String(ev.path[1]).substr(0,3))
+                   
+
+                   editingHeader.appendChild(boxNumber)
+                   window.scrollTo(0, 0);
+                }
+                else {
+
+                    clicked = false;
+                    s.animate({viewBox: "0 0 230 620"}, 200)
+                    editingArea.classList.remove("hidden")
+                   
+                   boxNumber.parentNode.removeChild(boxNumber)
+                   colorGuide.classList.remove("hidden");
+                    layoutGuide.classList.remove("hidden");
+                    editingBlock.className += " hidden"
+
+                }
+           }
+            var boxesSVG = document.getElementById("svg")
+            boxesSVG.addEventListener('click',function(e){
+                if(e.target && ( String(e.target) == "[object SVGPathElement]" ||  String(e.target) == "[object SVGTextElement]" ||  String(e.target) == "[object SVGRectElement]"  ) ){//do something
+                    var path =   e.path[1].innerHTML
+                    zoomIn(e,path)
+
+                }
+            })
+            
+            
+                        // Get the modal
+            var modal = document.getElementById('myModal');
+
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+            var btn1 = document.getElementById("myBtn1");
+            var btn2 = document.getElementById("myBtn2");
+            var btn3 = document.getElementById("myBtn3");
+            var btn4 = document.getElementById("myBtn4");
+            var btn5 = document.getElementById("myBtn5");
+            var btn6 = document.getElementById("myBtn6");
+            var btn7 = document.getElementById("myBtn7");
+
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+             // When the user clicks on the button, open the modal 
+             btn1.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn2.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn3.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn4.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn5.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn6.onclick = function() {
+                modal.style.display = "block";
+            }
+              // When the user clicks on the button, open the modal 
+              btn7.onclick = function() {
+                modal.style.display = "block";
+            }
+
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+           
+
+               
+
+
+    </script>
+</html>
